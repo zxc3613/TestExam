@@ -33,7 +33,9 @@
     {
         '_id':'1234567890',
         'username':'hongildong',
+        'password':'hong123'
         'name':'홍길동'
+        'salt':'asdfasdfasdf'
     }
     </pre>
 

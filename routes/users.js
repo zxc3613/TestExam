@@ -36,7 +36,7 @@ router.post('/signup', function(req, res, next) {
       return;
     } else {
       crypto.randomBytes(64, function(err, buff) {
-        const saltStr = buf.toString('base64');
+        const saltStr = buff.toString('base64');
 
         crypto.pbkdf2(password, saltStr, 100, 64, 'sha512', function(err, key) {
           const cryptoPassword = key.toString('base64');
@@ -80,8 +80,20 @@ var userValidation = function(username, password, name) {
 
 //로그인
 router.post('/login', function(req, res, next) {
-  username = req.body.username;
-  password = req.body.password;
+  var username = req.body.username;
+  var password = req.body.password;
+
+    crypto.randomBytes(64, function(err, buff) {
+     const saltStr = buff.toString('base64');
+
+   usersCollection.count({'username': username, 'salt': saltStr}, function(err, result) {
+     if (err) throw(err);
+
+     if (result < 1) {
+       res.json({message:'400 Bad Request'});
+       return;
+     } else res.json({message:'login go'});
+  });
 });
 
 
